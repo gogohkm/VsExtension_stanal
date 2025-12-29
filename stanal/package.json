@@ -1,21 +1,102 @@
 {
   "name": "stanal",
-  "displayName": "stanal",
-  "description": "structural analysis tool for Engineer",
+  "displayName": "STANAL - Structural Analysis",
+  "description": "3D Structural Analysis Tool for Engineers using Finite Element Method",
   "version": "0.0.1",
+  "publisher": "stanal",
   "engines": {
     "vscode": "^1.107.0"
   },
   "categories": [
+    "Programming Languages",
+    "Visualization",
     "Other"
+  ],
+  "keywords": [
+    "structural analysis",
+    "finite element",
+    "FEM",
+    "engineering",
+    "civil engineering"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "stanal",
+        "aliases": ["STANAL", "Structural Analysis"],
+        "extensions": [".stanal"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "stanal",
+        "scopeName": "source.stanal",
+        "path": "./syntaxes/stanal.tmLanguage.json"
+      }
+    ],
     "commands": [
       {
-        "command": "stanal.helloWorld",
-        "title": "Hello World"
+        "command": "stanal.showPreview",
+        "title": "STANAL: Show 3D Preview",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "stanal.runAnalysis",
+        "title": "STANAL: Run Analysis",
+        "icon": "$(play)"
+      },
+      {
+        "command": "stanal.showResults",
+        "title": "STANAL: Show Results",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "stanal.newModel",
+        "title": "STANAL: New Model",
+        "icon": "$(new-file)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "stanal.showPreview",
+          "when": "resourceLangId == stanal",
+          "group": "navigation"
+        },
+        {
+          "command": "stanal.runAnalysis",
+          "when": "resourceLangId == stanal",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "stanal.runAnalysis",
+          "when": "resourceLangId == stanal",
+          "group": "stanal"
+        },
+        {
+          "command": "stanal.showPreview",
+          "when": "resourceLangId == stanal",
+          "group": "stanal"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "stanal.showPreview",
+        "key": "ctrl+shift+p",
+        "mac": "cmd+shift+p",
+        "when": "resourceLangId == stanal"
+      },
+      {
+        "command": "stanal.runAnalysis",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "resourceLangId == stanal"
       }
     ]
   },
@@ -26,6 +107,9 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test"
+  },
+  "dependencies": {
+    "mathjs": "^13.2.0"
   },
   "devDependencies": {
     "@types/vscode": "^1.107.0",

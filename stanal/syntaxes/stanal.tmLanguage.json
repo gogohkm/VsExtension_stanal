@@ -1,0 +1,133 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "STANAL",
+  "scopeName": "source.stanal",
+  "patterns": [
+    { "include": "#value" }
+  ],
+  "repository": {
+    "value": {
+      "patterns": [
+        { "include": "#object" },
+        { "include": "#array" },
+        { "include": "#string" },
+        { "include": "#number" },
+        { "include": "#constant" }
+      ]
+    },
+    "object": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.dictionary.begin.stanal" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.dictionary.end.stanal" }
+      },
+      "patterns": [
+        { "include": "#object-member" },
+        { "include": "#value" }
+      ]
+    },
+    "object-member": {
+      "patterns": [
+        {
+          "match": "\"(model|materials|sections|nodes|members|supports|loadCases|loadCombinations)\"\\s*(:)",
+          "captures": {
+            "1": { "name": "keyword.control.stanal" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.stanal" }
+          }
+        },
+        {
+          "match": "\"(id|name|iNode|jNode|node|member|material|section)\"\\s*(:)",
+          "captures": {
+            "1": { "name": "variable.other.property.stanal" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.stanal" }
+          }
+        },
+        {
+          "match": "\"(E|G|nu|rho|A|Iy|Iz|J)\"\\s*(:)",
+          "captures": {
+            "1": { "name": "support.type.property-name.stanal" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.stanal" }
+          }
+        },
+        {
+          "match": "\"(x|y|z|dx|dy|dz|rx|ry|rz)\"\\s*(:)",
+          "captures": {
+            "1": { "name": "entity.name.tag.stanal" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.stanal" }
+          }
+        },
+        {
+          "match": "\"(type|direction|magnitude|w1|w2|x1|x2|factors|units|length|force|rotation|nodeLoads|memberLoads)\"\\s*(:)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.stanal" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.stanal" }
+          }
+        },
+        {
+          "match": "\"([^\"]+)\"\\s*(:)",
+          "captures": {
+            "1": { "name": "string.quoted.double.stanal" },
+            "2": { "name": "punctuation.separator.dictionary.key-value.stanal" }
+          }
+        }
+      ]
+    },
+    "array": {
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.array.begin.stanal" }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.array.end.stanal" }
+      },
+      "patterns": [
+        { "include": "#value" }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "match": "\"(FX|FY|FZ|MX|MY|MZ|Fx|Fy|Fz|Mx|My|Mz)\"",
+          "name": "constant.other.direction.stanal"
+        },
+        {
+          "match": "\"(distributed|point|moment)\"",
+          "name": "constant.other.loadtype.stanal"
+        },
+        {
+          "match": "\"(mm|m|in|ft|kN|N|kip|lb|MPa|ksi)\"",
+          "name": "constant.other.unit.stanal"
+        },
+        {
+          "begin": "\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.stanal" }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.stanal" }
+          },
+          "name": "string.quoted.double.stanal",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.stanal"
+            }
+          ]
+        }
+      ]
+    },
+    "number": {
+      "match": "-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?",
+      "name": "constant.numeric.stanal"
+    },
+    "constant": {
+      "match": "\\b(true|false|null)\\b",
+      "name": "constant.language.stanal"
+    }
+  }
+}

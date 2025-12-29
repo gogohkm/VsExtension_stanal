@@ -1,0 +1,123 @@
+{
+  "model": {
+    "name": "Portal Frame",
+    "units": {
+      "length": "mm",
+      "force": "kN"
+    }
+  },
+  "materials": [
+    {
+      "id": "Steel",
+      "E": 210000,
+      "G": 81000,
+      "nu": 0.3,
+      "rho": 7.85e-9
+    }
+  ],
+  "sections": [
+    {
+      "id": "Column",
+      "A": 8000,
+      "Iy": 80000000,
+      "Iz": 30000000,
+      "J": 500000
+    },
+    {
+      "id": "Beam",
+      "A": 6000,
+      "Iy": 60000000,
+      "Iz": 20000000,
+      "J": 300000
+    }
+  ],
+  "nodes": [
+    { "id": "N1", "x": 0, "y": 0, "z": 0 },
+    { "id": "N2", "x": 0, "y": 4000, "z": 0 },
+    { "id": "N3", "x": 6000, "y": 4000, "z": 0 },
+    { "id": "N4", "x": 6000, "y": 0, "z": 0 }
+  ],
+  "members": [
+    {
+      "id": "C1",
+      "iNode": "N1",
+      "jNode": "N2",
+      "material": "Steel",
+      "section": "Column"
+    },
+    {
+      "id": "B1",
+      "iNode": "N2",
+      "jNode": "N3",
+      "material": "Steel",
+      "section": "Beam"
+    },
+    {
+      "id": "C2",
+      "iNode": "N4",
+      "jNode": "N3",
+      "material": "Steel",
+      "section": "Column"
+    }
+  ],
+  "supports": [
+    {
+      "node": "N1",
+      "dx": true,
+      "dy": true,
+      "dz": true,
+      "rx": true,
+      "ry": true,
+      "rz": true
+    },
+    {
+      "node": "N4",
+      "dx": true,
+      "dy": true,
+      "dz": true,
+      "rx": true,
+      "ry": true,
+      "rz": true
+    }
+  ],
+  "loadCases": [
+    {
+      "name": "Dead",
+      "nodeLoads": [],
+      "memberLoads": [
+        {
+          "member": "B1",
+          "type": "distributed",
+          "direction": "Fy",
+          "w1": -20,
+          "w2": -20
+        }
+      ]
+    },
+    {
+      "name": "Wind",
+      "nodeLoads": [
+        {
+          "node": "N2",
+          "direction": "FX",
+          "magnitude": 30
+        }
+      ],
+      "memberLoads": []
+    }
+  ],
+  "loadCombinations": [
+    {
+      "name": "1.0D",
+      "factors": { "Dead": 1.0 }
+    },
+    {
+      "name": "1.0W",
+      "factors": { "Wind": 1.0 }
+    },
+    {
+      "name": "1.2D+1.0W",
+      "factors": { "Dead": 1.2, "Wind": 1.0 }
+    }
+  ]
+}

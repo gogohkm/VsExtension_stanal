@@ -1,0 +1,100 @@
+{
+  "model": {
+    "name": "Simple Beam - Point Load",
+    "units": {
+      "length": "mm",
+      "force": "kN"
+    }
+  },
+  "materials": [
+    {
+      "id": "Steel",
+      "E": 210000,
+      "G": 81000,
+      "nu": 0.3,
+      "rho": 7.85e-9
+    }
+  ],
+  "sections": [
+    {
+      "id": "W200x46",
+      "A": 5890,
+      "Iy": 45500000,
+      "Iz": 15300000,
+      "J": 218000
+    }
+  ],
+  "nodes": [
+    { "id": "N1", "x": 0, "y": 0, "z": 0 },
+    { "id": "N2", "x": 6000, "y": 0, "z": 0 }
+  ],
+  "members": [
+    {
+      "id": "M1",
+      "iNode": "N1",
+      "jNode": "N2",
+      "material": "Steel",
+      "section": "W200x46"
+    }
+  ],
+  "supports": [
+    {
+      "node": "N1",
+      "dx": true,
+      "dy": true,
+      "dz": true,
+      "rx": true,
+      "ry": false,
+      "rz": false
+    },
+    {
+      "node": "N2",
+      "dx": false,
+      "dy": true,
+      "dz": true,
+      "rx": false,
+      "ry": false,
+      "rz": false
+    }
+  ],
+  "loadCases": [
+    {
+      "name": "Dead",
+      "nodeLoads": [],
+      "memberLoads": [
+        {
+          "member": "M1",
+          "type": "distributed",
+          "direction": "Fy",
+          "w1": -10,
+          "w2": -10
+        }
+      ]
+    },
+    {
+      "name": "Live",
+      "nodeLoads": [
+        {
+          "node": "N2",
+          "direction": "FY",
+          "magnitude": -50
+        }
+      ],
+      "memberLoads": []
+    }
+  ],
+  "loadCombinations": [
+    {
+      "name": "1.0D",
+      "factors": { "Dead": 1.0 }
+    },
+    {
+      "name": "1.0L",
+      "factors": { "Live": 1.0 }
+    },
+    {
+      "name": "1.2D+1.6L",
+      "factors": { "Dead": 1.2, "Live": 1.6 }
+    }
+  ]
+}
